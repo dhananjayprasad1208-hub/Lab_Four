@@ -5,7 +5,6 @@
 int main() {
     // Variable Declarations
     std::string foodName;
-    char itemCode;
     int itemQuantity;
     double unitPrice;
     char memberChar;
@@ -16,17 +15,60 @@ int main() {
     std::cout << "=== RECEIPT SYSTEM INPUT ===" << std::endl;
 
     // Read string with spaces
-    std::cout << "Enter food item name: ";
-    std::getline(std::cin, foodName);
 
-    std::cout << "Enter item code (single character): ";
-    std::cin >> itemCode;
+    std::cout << "\n=== MENU ===\n";
+    std::cout << std::left << std::setw(15) << "Item"
+        << std::setw(10) << "Small(s)"
+        << std::setw(10) << "Medium(m)"
+        << std::setw(10) << "Large(l)" << std::endl;
+
+    std::cout << "A. Latte       3.50      4.50      5.50\n";
+    std::cout << "B. Mocha       4.00      5.00      6.00\n";
+    std::cout << "C. Tea         2.00      2.50      3.00\n";
+    std::cout << "D. Smoothie    5.00      6.00      7.00\n\n";
+
+    char itemChoice;
+    char sizeChoice;
+
+    std::cout << "Select an item (A-D): ";
+    std::cin >> itemChoice;
+
+    std::cout << "Select a size (s/m/l): ";
+    std::cin >> sizeChoice;
+
+    if (itemChoice == 'A' || itemChoice == 'a') {
+        foodName = "Latte";
+        if (sizeChoice == 's') unitPrice = 3.50;
+        else if (sizeChoice == 'm') unitPrice = 4.50;
+        else unitPrice = 5.50;
+    }
+    else if (itemChoice == 'B' || itemChoice == 'b') {
+        foodName = "Mocha";
+        if (sizeChoice == 's') unitPrice = 4.00;
+        else if (sizeChoice == 'm') unitPrice = 5.00;
+        else unitPrice = 6.00;
+    }
+    else if (itemChoice == 'C' || itemChoice == 'c') {
+        foodName = "Tea";
+        if (sizeChoice == 's') unitPrice = 2.00;
+        else if (sizeChoice == 'm') unitPrice = 2.50;
+        else unitPrice = 3.00;
+    }
+    else if (itemChoice == 'D' || itemChoice == 'd') {
+        foodName = "Smoothie";
+        if (sizeChoice == 's') unitPrice = 5.00;
+        else if (sizeChoice == 'm') unitPrice = 6.00;
+        else unitPrice = 7.00;
+    }
+    else {
+        std::cout << "Invalid item selection.\n";
+        return 0;
+    }
+
 
     std::cout << "Enter item quantity: ";
     std::cin >> itemQuantity;
 
-    std::cout << "Enter unit price: $";
-    std::cin >> unitPrice;
 
     std::cout << "Is customer a rewards member? (y/n): ";
     std::cin >> memberChar;
@@ -66,8 +108,6 @@ int main() {
     std::cout << std::left << std::setw(25) << "Item Name:"
         << std::right << std::setw(15) << foodName << std::endl;
 
-    std::cout << std::left << std::setw(25) << "Item Code:"
-        << std::right << std::setw(15) << itemCode << std::endl;
 
     std::cout << std::left << std::setw(25) << "Quantity x Price:"
         << std::right << std::setw(10) << itemQuantity << " x $"
@@ -107,10 +147,49 @@ int main() {
 
     // Table Row Data
     std::cout << std::left << std::setw(15) << foodName
-        << std::left << std::setw(8) << itemCode
+        << std::left << std::setw(8) << sizeChoice
         << std::right << std::setw(8) << itemQuantity
         << std::right << std::setw(11) << "$" << unitPrice
         << std::right << std::setw(11) << "$" << subtotal << std::endl;
+
+    double stateTax = discountedSubtotal * 0.065;
+    double countyTax = discountedSubtotal * 0.005;
+    double cityTax = discountedSubtotal * 0.02125;
+    double totalTax = stateTax + countyTax + cityTax;
+
+    std::cout << "\n=== TAXES ===\n";
+    std::cout << std::left << std::setw(25) << "Arkansas State (6.5%):"
+        << "$" << std::right << std::setw(10) << stateTax << std::endl;
+
+    std::cout << std::left << std::setw(25) << "Faulkner County (0.5%):"
+        << "$" << std::right << std::setw(10) << countyTax << std::endl;
+
+    std::cout << std::left << std::setw(25) << "Conway City (2.125%):"
+        << "$" << std::right << std::setw(10) << cityTax << std::endl;
+
+    std::cout << "\n=== TIP MENU ===\n";
+    std::cout << "A. 15%\n";
+    std::cout << "B. 20%\n";
+    std::cout << "C. 25%\n";
+    std::cout << "D. Other Amount\n";
+
+    char tipChoice;
+    std::cout << "Choose a tip option: ";
+    std::cin >> tipChoice;
+
+    double tipAmount = 0.0;
+
+    if (tipChoice == 'A' || tipChoice == 'a') tipAmount = discountedSubtotal * 0.15;
+    else if (tipChoice == 'B' || tipChoice == 'b') tipAmount = discountedSubtotal * 0.20;
+    else if (tipChoice == 'C' || tipChoice == 'c') tipAmount = discountedSubtotal * 0.25;
+    else {
+        std::cout << "Enter custom tip amount: $";
+        std::cin >> tipAmount;
+    }
+
+    double finalTotal = discountedSubtotal + totalTax + tipAmount;
+
+    std::cout << "\nFINAL TOTAL: $" << finalTotal << std::endl;
 
     return 0;
 }

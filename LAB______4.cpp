@@ -152,5 +152,44 @@ int main() {
         << std::right << std::setw(11) << "$" << unitPrice
         << std::right << std::setw(11) << "$" << subtotal << std::endl;
 
+    double stateTax = discountedSubtotal * 0.065;
+    double countyTax = discountedSubtotal * 0.005;
+    double cityTax = discountedSubtotal * 0.02125;
+    double totalTax = stateTax + countyTax + cityTax;
+
+    std::cout << "\n=== TAXES ===\n";
+    std::cout << std::left << std::setw(25) << "Arkansas State (6.5%):"
+        << "$" << std::right << std::setw(10) << stateTax << std::endl;
+
+    std::cout << std::left << std::setw(25) << "Faulkner County (0.5%):"
+        << "$" << std::right << std::setw(10) << countyTax << std::endl;
+
+    std::cout << std::left << std::setw(25) << "Conway City (2.125%):"
+        << "$" << std::right << std::setw(10) << cityTax << std::endl;
+
+    std::cout << "\n=== TIP MENU ===\n";
+    std::cout << "A. 15%\n";
+    std::cout << "B. 20%\n";
+    std::cout << "C. 25%\n";
+    std::cout << "D. Other Amount\n";
+
+    char tipChoice;
+    std::cout << "Choose a tip option: ";
+    std::cin >> tipChoice;
+
+    double tipAmount = 0.0;
+
+    if (tipChoice == 'A' || tipChoice == 'a') tipAmount = discountedSubtotal * 0.15;
+    else if (tipChoice == 'B' || tipChoice == 'b') tipAmount = discountedSubtotal * 0.20;
+    else if (tipChoice == 'C' || tipChoice == 'c') tipAmount = discountedSubtotal * 0.25;
+    else {
+        std::cout << "Enter custom tip amount: $";
+        std::cin >> tipAmount;
+    }
+
+    double finalTotal = discountedSubtotal + totalTax + tipAmount;
+
+    std::cout << "\nFINAL TOTAL: $" << finalTotal << std::endl;
+
     return 0;
 }
